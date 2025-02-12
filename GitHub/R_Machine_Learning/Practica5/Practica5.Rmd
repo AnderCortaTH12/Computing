@@ -1,0 +1,146 @@
+---
+title: 'Práctica 5: repaso'
+author: "Fernando de Villar"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Este ejercicio se plantea como una preparación de la práctica evaluada. Se pide aplicar una técnica de las estudiadas, en este caso support vector machine (SVM), siguiendo unos pasos. La entrega de la práctica evaluada será en formato R Markdown (.Rmd). Se recomienda la utilización del modo visual. En los distintos pasos se pide añadir bloques de código y de texto explicando por qué se hace cada paso e interpretando los resultados obtenidos. No hay que entregar nada de esta práctica.
+
+```{r}
+#load libraries
+```
+
+# **Ejercicio**
+
+Utiliza el conjunto de datos Iris, que se encuentra disponible "iris.csv". El objetivo es construir un clasificador SVM para predecir la especie de iris (si es versicolor o no) en función de las características de las flores.
+
+**Instrucciones:**
+
+1.  **Cargar el conjunto de datos Iris en R como df.**
+
+```{r}
+df = read.csv("iris.csv")
+```
+
+2.  **Crear una variable binaria (esversicolor) que sea verdadera si es versicolor y falsa en caso contrario. Debe ser un factor para ser reconocida como variable categórica.**
+
+```{r}
+esversicolor = factor(df$Species=="versicolor")
+df <- data.frame(df, esversicolor)
+```
+
+
+3.  **Eliminar la variable de especie:**
+
+```{r}
+df$Species = NULL
+```
+
+4.  **Visualización de datos.**
+
+    ```{r, fig.show='hide'}
+    plot(df)
+    ```
+
+5.  **Preprocesamiento de datos (Detección y Manejo de Valores Ausentes): Antes de proceder, verifica si hay valores ausentes en el conjunto de datos y toma una decisión sobre cómo manejarlos.**
+
+```{r}
+df <- df[complete.cases(df), ]
+```
+
+6.  **Dividir el conjunto de datos en un subconjunto de entrenamiento (80% de los datos) y uno de prueba. Procurar que se conserve la proporción de datos que son versicolor y que no.**
+
+```{r}
+set.seed(123)  # Establece una semilla para obtener resultados reproducibles
+n <- nrow(df)
+trainIndex <- sample(1:n, round(0.8 * n))
+
+trainSet <- df[trainIndex, ]
+testSet <- df[-trainIndex, ]
+```
+
+7.  **Razonar qué tipo de kernel podría ser más conveniente en este caso.**
+
+```{r}
+plot(subset(df,select=-X),col=df$esversicolor)
+```
+
+*Observamos que no se podrá separar las dos clases de datos con hiperplanos, por lo que tendremos que buscar un kernel no lineal. Parece, por la disposición de los datos, que puede ser conveniente un kernel radial.*
+ 
+8.  **Utilizar la validación cruzada para elegir los mejores parámetros para el modelo. Mostrar el resultado de la validación cruzada.**
+
+```{r}
+library(e1071)
+set.seed(1)
+tune.out <- tune(svm, esversicolor ~ . - X, data = trainSet, kernel="radial", ranges = list(cost = 10^(-1:3), gamma= c(0.5, 1, 2, 3, 4)))
+summary(tune.out)
+```
+
+*el mejor putno es cost=1 y gamma=0.5*
+
+```{r}
+set.seed(2222)
+tune.out <- tune(svm, esversicolor ~ . - X, data = trainSet, kernel="radial", ranges = list(cost = seq(0.1,2,0.1), gamma= seq(0.1,1,0.1)))
+summary(tune.out)
+```
+
+*después de analizar los costes en un entorno menor,nos encontramos con muchas conbinaciones con el mismo error. Elegiremos los menores valores de cost y gamma ya que estos cuando son mayores el modelo tiende a sobreajustarse, con lo que los mejores valores de cost y gamma serían: cost=0.7 y gamma=0.2 *
+
+9.  **Entrenar el modelo con los parámetros obtenidos.**
+
+```{r}
+mdl.out <- svm(esversicolor~.-X, data = trainSet, kernel = 'radial', gamma = 0.2, cost = 0.7)
+```
+
+10. **Predecir en el subconjunto de prueba e interpretar los resultados.**
+
+```{r}
+pred <- predict(mdl.out, newdata = testSet)
+table(true=testSet$esversicolor, pred=pred)
+```
+*literalmente el modelo ha predecido todas las flores correctamente 18 no son versicolor y 10 sí.*
+
+11. **Repetir los pasos 8 a 10 con otro tipo de kernel y comentar los resultados.**
+
+```{r}
+set.seed(2)
+tune.out <- tune(svm, esversicolor ~ . -X, data = trainSet, kernel="polynomial", ranges = list(cost = 10^(-1:3), degree = 1:7))
+summary(tune.out)
+```
+
+```{r}
+set.seed(4321)
+tune.out <- tune(svm, esversicolor ~ . -X, data = trainSet, kernel="polynomial", ranges = list(cost = seq(8,12,0.5), degree = 1:7))
+summary(tune.out)
+```
+
+```{r}
+set.seed(4321)
+tune.out <- tune(svm, esversicolor ~ . -X, data = trainSet, kernel="polynomial", ranges = list(cost = seq(6,10,0.5), degree = 1:7))
+summary(tune.out)
+```
+
+```{r}
+set.seed(4321)
+tune.out <- tune(svm, esversicolor ~ . -X, data = trainSet, kernel="polynomial", ranges = list(cost = seq(4,8,0.5), degree = 1:7))
+summary(tune.out)
+```
+
+*hemos reducido el error al 0.0356, con cost=6 y degree=2*
+
+```{r}
+mdl.out <- svm(esversicolor~.-X, data = trainSet, kernel = 'polynomial', cost=6, degree = 2)
+```
+
+```{r}
+pred <- predict(mdl.out, newdata = testSet)
+table(true=testSet$esversicolor, pred=pred)
+```
+
