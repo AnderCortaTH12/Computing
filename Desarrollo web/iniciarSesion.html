@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sureuskadi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+
+<style>
+  .center-content {
+    text-align: center;
+  }
+</style>
+
+</head>
+
+<body>
+<!-- Aquí es donde ponemos la NavBar -->
+<div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="index.html" class="w3-bar-item w3-button w3-hover-red">Home</a>
+    <a href="EventList" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> Events</a>
+    <a href="contactanos.html" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> Contact Us</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> About Us</a>
+
+
+    <a href="ProfileSelection.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
+    <i class="fas fa-user"></i>
+</a>
+
+</div>
+
+<!-- Aquí añadimos la imagen -->
+
+
+<!-- Aquí añadimos un espacio en blanco -->
+
+<!-- Aquí añadimos un espacio en blanco -->
+<div class="w3-container w3-padding" style="height: 50px;"></div>
+
+
+<!-- Aquí añadimos la fila con dos columnas -->
+<div class="w3-container w3-padding">
+  <div class="w3-row">
+    <div class="w3-col m5 center-content">
+      <img src="https://images.pexels.com/photos/57690/pexels-photo-57690.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" style="width: 80%; height: 600px; border-radius: 24px;">
+    </div>
+	 
+    <div id="titulo"  class="w3-col m6 center-content">
+	<h1  style="color: red; font-weight: bold;">Create user</h1>
+      <p>Log in or Sign up in our plataform</p>
+       
+    <table style="border-spacing: 10px; margin: 0 auto;">
+      
+	  
+      
+	  
+      <tr>
+        <td colspan="2"><input type="text" placeholder="Name" name="Name" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+	  
+	  <tr>
+        <td colspan="2"><input type="text" placeholder="Last name" name="LastName" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+      
+      <tr>
+        <td colspan="2"><input type="text" placeholder="DNI" name="DNI" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+	  
+	  <tr>
+        <td colspan="2"><input type="text" placeholder="E-mail" name="E-mail" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+	  
+	  <tr>
+        <td colspan="2"><input type="text" placeholder="Phone" name="Phone" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+	
+	  
+	  
+	  
+	  <tr>
+        <td><input type="password" placeholder="Password" name="Password" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+        <td><input type="password" placeholder="Confirm password" name="ConfirmPassword" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+      </tr>
+	  
+	  
+	  
+	  <tr>
+        <td colspan="2"><button onclick="window.location.href = 'SupervisorProfile.html';" class="w3-button w3-red" style="width: 100%; margin-top: 10px; border-radius: 24px;">Send</button></td>
+	  </tr>
+	  
+	  <tr>
+        <td colspan="2"><p style="text-align: center;">Do you alredy have an account?  <a href="#" onclick="ChangeText()" id="cambiarTexto">Log in</a></p></td>
+      </tr>
+	  
+	  
+	  
+	  
+	  
+    </table>
+    
+  
+	  
+    </div>
+	
+	
+  </div>
+</div>
+
+
+
+<script>
+
+function ChangeText(){
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange= function(){
+	if(xmlhttp.readyState==4 && xmlhttp.status==200){
+		document.getElementById("titulo").innerHTML= xmlhttp.responseText;
+	}
+}
+xmlhttp.open("GET", "Textos/text.txt", true);
+xmlhttp.send();
+
+
+}
+function Volver(){
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange= function(){
+	if(xmlhttp.readyState==4 && xmlhttp.status==200){
+		document.getElementById("titulo").innerHTML= xmlhttp.responseText;
+	}
+}
+xmlhttp.open("GET", "Textos/text2.txt", true);
+xmlhttp.send();
+
+
+}
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

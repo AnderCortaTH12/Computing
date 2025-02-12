@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sureuskadi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-item {
+  flex: 1;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el contenedor del dropdown y el input */
+.dropdown-container {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+}
+
+/* Estilos adicionales */
+h2, form {
+  text-align: center; /* Centra el título y el formulario */
+  margin: 0 auto; /* Centra horizontalmente el título y el formulario */
+  max-width: 400px; /* Ancho máximo del formulario */
+}
+
+input[type="submit"] {
+  background-color: red; /* Cambia el color de fondo del botón a rojo */
+  color: white; /* Cambia el color del texto del botón a blanco */
+  padding: 10px 20px; /* Añade relleno al botón */
+  border: none; /* Elimina el borde del botón */
+  border-radius: 5px; /* Añade bordes redondeados al botón */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+</style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:1600px; margin: 0;">
+
+<div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+    <a href="iniciarSesion.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
+      Log out <i class="fas fa-user"></i>
+    </a>
+</div>
+
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="Fotos/rollo.jpg" style="width:30%;" class="w3-round"><br><br>
+    <h4><b>Welcome back!</b></h4>
+  </div>
+  <div class="w3-bar-block">
+    <a href="SupervisorProfile.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-"><i class="fa fa-user fa-fw w3-margin-right"></i>Profile</a> 
+    <a href="mirareventos.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-"><i class="fa fa-th-large fa-fw w3-margin-right"></i>Events</a> 
+    <a href="actas.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding "><i class="fa fa-file w3-margin-right"></i>Records</a>
+    <a href="trabajadores.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-red"><i class=" fa-user fa-fw w3-margin-right"></i>Workers</a>
+  </div>
+</nav>
+
+<div class="w3-main" style="margin-left:300px">
+<head>
+    <title>Search worker</title>
+</head>
+<body>
+
+<img src="Fotos/workers.JPG">
+<h2>Search worker</h2>
+
+<form action="/buscar_trabajador" method="GET">
+    <label for="nombre">Name:</label><br>
+    <input type="text" id="nombre" name="nombre"><br><br>
+
+    <label for="apellidos">Surnames:</label><br>
+    <input type="text" id="apellidos" name="apellidos"><br><br>
+
+   <center> <a href="datostrabajador.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
+      Search 
+    </a> </center>
+</form>
+
+</body> 
+
+</html>
