@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sureuskadi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-item {
+  flex: 1;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el contenedor del dropdown y el input */
+.dropdown-container {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+}
+.dropdown-container select, 
+.dropdown-container input[type="text"] {
+  margin-right: 10px; /* Margen derecho para separar los elementos */
+}
+</style>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:1600px; margin: 0;">
+
+
+
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="Fotos/rollo.jpg" style="width:70%;" class="w3-round"><br><br>
+    <h4><b>Welcome back!</b></h4>
+  </div>
+  <div class="w3-bar-block">
+    <a href="SupervisorProfile.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding "><i class="fa fa-user fa-fw w3-margin-right"></i>Profile</a> 
+    <a href="mirareventos.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text "><i class="fa fa-th-large fa-fw w3-margin-right"></i>Events</a> 
+    <a href="actas.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-red"><i class="fa fa-file w3-margin-right"></i>Records </a>
+	<a href="trabajadores.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-hammer fa-fw w3-margin-right"></i>Workers</a>
+  	<a href="ProfileSelection.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fas fa-sign-out-alt fa-fw w3-margin-right"></i>Log out</a>
+
+  </div>
+</nav>
+
+<div class="w3-main" style="margin-left:200px">
+  <img src="Fotos/actas.JPG">
+
+  <div class="dropdown-container">
+    <label for="seleccion">Filter records:</label>
+    <select id="seleccion" name="seleccion">
+      <option value="DNI">DNI</option>
+      <option value="Evento">Evento</option>
+    </select>
+    <input type="text" placeholder="Search...">
+    <button type="button">Filter</button>
+  </div>
+  <a href="nuevaacta.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-blue">
+      Create new record  <i class="fa fa-file"></i>
+</a>
+</div>
+
+
+</body>
+</html>
