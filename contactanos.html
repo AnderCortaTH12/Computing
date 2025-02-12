@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sureuskadi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+  .center-content {
+    text-align: center;
+  }
+  .confirmation-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #dff0d8;
+    border: 1px solid #3c763d;
+    border-radius: 5px;
+  }
+</style>
+
+</head>
+
+<body>
+<!-- Aquí es donde ponemos la NavBar -->
+<div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="menu.html" class="w3-bar-item w3-button w3-hover-red">Home</a>
+    <a href="EventList" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> Events</a>
+    <a href="contactanos.html" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> Contact Us</a>
+    <a href="index.html#about" class="w3-bar-item w3-button w3-hide-small w3-hover-red"> About Us</a>
+
+
+    <a href="ProfileSelection.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
+    <i class="fas fa-user"></i>
+</a>
+
+</div>
+
+<!-- Aquí añadimos la imagen -->
+
+<div id="map" style="width: 100%; height: 400px;"></div>
+
+<!-- Aquí añadimos un espacio en blanco -->
+
+<!-- Aquí añadimos un espacio en blanco -->
+<div class="w3-container w3-padding" style="height: 50px;"></div>
+
+
+<!-- Aquí añadimos la fila con dos columnas -->
+<div class="w3-container w3-padding">
+  <div class="w3-row">
+    <div class="w3-col m6 center-content">
+      <h1 style="color: red; font-weight: bold;">Get in contact with us</h1>
+      <p>Do you have any questions about how we can assist you? Would you like to learn more about our future projects? Or perhaps you have an exciting idea that you would like to share with us? Feel free to get in touch with our team through the contact form below or via our social media channels. We are here for you and eager to hear from you. Together, we can create something amazing!</p>
+    </div>
+     
+    <div class="w3-col m6 center-content">
+    
+    <form id="contactForm" method='get' action='MensajeContacto'>
+        <table style="border-spacing: 10px; margin: 0 auto;">
+          <tr>
+            <td><input type="text" placeholder="Name" name="Name" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+            <td><input type="text" placeholder="Last name" name="LastName" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+          </tr>
+          <tr>
+            <td><input type="text" placeholder="E-mail" name="E-mail" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+            <td><input type="text" placeholder="Phone" name="Phone" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+          </tr>
+          <tr>
+            <td colspan="2"><input type="text" placeholder="Message" name="Message" style="width: 100%; padding: 10px; border-radius: 12px;"></td>
+          </tr>
+          
+          <tr>
+          <td colspan="2"> <button id="submitButton" onclick="mostrarMensaje(event)" class="w3-button w3-red" style="width: 100%; margin-top: 10px; border-radius: 24px;">Send</button></td>
+		  
+          </tr>
+          
+        </table>
+    </form>
+  
+      
+    </div>
+    
+    
+  </div>
+</div>
+
+<script>
+    var map = L.map('map').setView([43.32319, -1.96811], 14); // Coordenadas de San Sebastián
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+     L.marker([43.323135, -1.96815]).addTo(map)
+        .bindPopup('<b> C. de Rentería, 10, 12 bajo, 20013 Donostia-San Sebastian, Gipuzkoa</b>').openPopup();
+        
+
+    
+</script>
+
+<script>
+function mostrarMensaje(event) {
+    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
+    var form = document.getElementById("contactForm");
+    var formData = new FormData(form);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", form.action + "?" + new URLSearchParams(formData).toString(), true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Eliminar mensajes de confirmación anteriores
+                var confirmationMessages = document.querySelectorAll(".confirmation-message");
+                confirmationMessages.forEach(function(message) {
+                    message.parentNode.removeChild(message);
+                });
+                
+                // Agregar el mensaje de confirmación
+                var confirmationContainer = document.createElement("div");
+                confirmationContainer.innerHTML = '<div class="confirmation-message">Solicitud enviada</div>';
+                form.parentNode.insertBefore(confirmationContainer, document.getElementById("submitButton").nextSibling);
+
+                // Limpiar el formulario después de enviar el mensaje
+                form.reset(); 
+            } else {
+                // Manejar el error si es necesario
+                console.error("Error al enviar la solicitud:", xhr.status);
+            }
+        }
+    };
+    xhr.send();
+}
+</script>
+
+</body>
+</html>
