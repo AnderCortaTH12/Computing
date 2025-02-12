@@ -1,3 +1,1 @@
-# Sureuskadi
-Proyecto sureuskadi
-version de hoy 15/04/2024
+Bienvenido/a a este repositorio. Aquí encontrarás una colección de proyectos y ejercicios que he desarrollado a lo largo de mi carrera. Esta carpeta sirve como un espacio de práctica, aprendizaje y crecimiento, donde exploro distintas tecnologías, lenguajes de programación y conceptos clave.
