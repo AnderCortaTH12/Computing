@@ -1,0 +1,65 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - work
+  pull_request:
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar entorno
+        run: cp .env.example .env
+
+      - name: Construir servicios
+        run: docker compose build
+
+      - name: Validar horario de notificaciones
+        run: |
+          source .env
+          python - <<'PY'
+import os
+
+for key in ("NOTIFICATION_MORNING_WINDOW", "NOTIFICATION_EVENING_WINDOW"):
+    value = os.environ.get(key)
+    if value is None:
+        raise SystemExit(f"Variable {key} no está definida")
+    if "-" not in value:
+        raise SystemExit(f"Formato inválido para {key}: {value}")
+print("Variables de horario válidas")
+PY
+
+      - name: Ejecutar pruebas del backend
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m compileall app
+
+      - name: Publicar artefacto del docker-compose
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-compose
+          path: docker-compose.yml
+
+  deploy:
+    needs: build-and-verify
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar entorno
+        run: cp .env.example .env
+
+      - name: Despliegue automatizado
+        run: |
+          chmod +x scripts/deploy.sh
+          ./scripts/deploy.sh
