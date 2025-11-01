@@ -1,0 +1,7 @@
+[build]
+  publish = "Desarrollo web"
+  command = ""
+
+[dev]
+  port = 8080
+  publish = "Desarrollo web"

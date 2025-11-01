@@ -1,6 +1,6 @@
 # Computing
 
-Este repositorio reúne distintos proyectos y ejercicios desarrollados para practicar tecnologías web, análisis de datos y machine learning. Además se incluyen los recursos necesarios para ejecutar una pila de ejemplo formada por un frontend estático, un backend en FastAPI y una base de datos PostgreSQL.
+Este repositorio reúne distintos proyectos y ejercicios desarrollados para practicar tecnologías web, análisis de datos y machine learning. Además se incluyen los recursos necesarios para ejecutar una pila de ejemplo formada por un frontend estático y un backend en FastAPI que expone la configuración de ventanas horarias para el envío de notificaciones.
 
 ## 📦 Instalación
 
@@ -15,55 +15,65 @@ Este repositorio reúne distintos proyectos y ejercicios desarrollados para prac
    ```
 
 3. **Configurar variables de entorno**
-   - Copia el archivo `.env.example` y renómbralo a `.env`.
-   - Ajusta las credenciales de base de datos y las ventanas horarias de notificaciones según tus necesidades.
-   ```bash
-   cp .env.example .env
-   ```
+   - Define las variables `NOTIFICATION_MORNING_WINDOW`, `NOTIFICATION_EVENING_WINDOW` y `NOTIFICATION_TIMEZONE` para personalizar el horario de notificaciones. Cada ventana debe utilizar el formato `HH:MM-HH:MM`.
 
 ## ▶️ Uso
 
-Con los requisitos previos instalados y el archivo `.env` configurado puedes levantar los servicios con Docker Compose:
+### Backend
+
+Con Python 3.11 instalado, crea un entorno virtual y ejecuta:
 
 ```bash
-docker compose up --build
+pip install -r requirements.txt
+uvicorn backend.app.main:app --reload
 ```
 
-Los servicios expuestos son:
+La API expondrá:
 
-| Servicio   | Puerto local | Descripción |
-|------------|--------------|-------------|
-| Frontend   | `http://localhost:8080` | Sitio estático contenido en `Desarrollo web/` servido con Nginx. |
-| Backend    | `http://localhost:8000` | API FastAPI con endpoints de salud y consulta de horarios de notificación. |
-| Base de datos | `localhost:5432` | Instancia PostgreSQL con volúmenes persistentes. |
+| Endpoint | Descripción |
+|----------|-------------|
+| `GET /health` | Devuelve `{ "status": "ok" }` para comprobar que el servicio está operativo. |
+| `GET /notifications/schedule` | Devuelve las ventanas horarias activas y la zona horaria configurada. |
 
-Para detener los servicios ejecuta:
+### Frontend
+
+El directorio `Desarrollo web/` contiene el sitio estático. Puedes servirlo con cualquier servidor de archivos estáticos. Un ejemplo rápido utilizando `python -m http.server`:
 
 ```bash
-docker compose down
+cd "Desarrollo web"
+python -m http.server 8080
 ```
 
 ### Variables de entorno relevantes
 
 | Variable | Descripción |
 |----------|-------------|
-| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT` | Configuración de la base de datos PostgreSQL. |
 | `NOTIFICATION_MORNING_WINDOW`, `NOTIFICATION_EVENING_WINDOW` | Ventanas horarias (formato `HH:MM-HH:MM`) utilizadas por el backend para programar notificaciones. |
 | `NOTIFICATION_TIMEZONE` | Zona horaria que se empleará al interpretar las ventanas configuradas. |
 
 El backend expone el endpoint `GET /notifications/schedule` para consultar los valores actuales de estas variables.
 
-## 🚀 CI/CD
+## 🧪 Pruebas
 
-El flujo definido en `.github/workflows/deploy.yml` construye las imágenes, valida las variables de horario de notificación y compila el backend. Cuando se hace push a la rama `main`, el job de despliegue ejecuta `scripts/deploy.sh`, que automatiza la construcción y el arranque de los servicios con Docker Compose.
-
-Si deseas realizar un despliegue manual, ejecuta:
+El repositorio incluye tests unitarios y de extremo a extremo para el backend. Para ejecutarlos junto con el linting utiliza:
 
 ```bash
-./scripts/deploy.sh
+pip install -r requirements-dev.txt
+ruff check .
+pytest
 ```
 
-Asegúrate de tener un archivo `.env` válido antes de lanzar el script.
+El flujo de integración continua definido en `.github/workflows/ci.yml` ejecuta los mismos pasos en GitHub Actions.
+
+### Pruebas manuales
+
+Antes de publicar una versión revisa manualmente:
+
+1. Cargar el frontend en `http://localhost:8080` y navegar por las vistas principales (`index.html`, `home.html`, `eventos.html`) para verificar enlaces y recursos.
+2. Ejecutar el backend con `uvicorn` y consultar `GET /notifications/schedule` comprobando que refleja los valores de las variables de entorno configuradas.
+3. Modificar temporalmente la ventana de la tarde y repetir la petición para confirmar que el horario se actualiza correctamente.
+
+Consulta la guía completa de despliegue y hosting en `docs/DEPLOYMENT.md`.
 
 ## 🤝 Contribuir
 
