@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel de entrenamientos</title>
+  <link rel="stylesheet" href="training-dashboard.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <h1>Panel de entrenamientos</h1>
+      <p>Registra tus sesiones, revisa tu evolución semanal y recibe consejos inteligentes generados por el entrenador virtual de OpenAI.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card" aria-labelledby="session-form-title">
+      <div class="card__header">
+        <h2 id="session-form-title">Registrar sesión</h2>
+        <p class="card__subtitle">Diseña la sesión a tu medida o usa un acceso rápido.</p>
+      </div>
+      <form id="session-form" class="form">
+        <div class="form__group">
+          <label for="session-date">Fecha</label>
+          <input id="session-date" name="date" type="date" required />
+        </div>
+        <div class="form__group">
+          <label for="session-type">Tipo de sesión</label>
+          <select id="session-type" name="type" required>
+            <option value="">Selecciona un tipo</option>
+          </select>
+        </div>
+        <div class="form__group">
+          <label for="session-duration">Duración (minutos)</label>
+          <input id="session-duration" name="duration" type="number" min="5" max="300" required />
+        </div>
+        <div class="form__group">
+          <label for="session-load">Carga percibida (RPE 1-10)</label>
+          <input id="session-load" name="load" type="number" min="1" max="10" step="1" required />
+        </div>
+        <div class="form__group form__group--full">
+          <label for="session-notes">Notas</label>
+          <textarea id="session-notes" name="notes" rows="2" placeholder="Sensaciones, foco del día, logros..."></textarea>
+        </div>
+        <button class="button" type="submit">Guardar sesión</button>
+      </form>
+
+      <div class="quick-add" aria-live="polite">
+        <h3>Accesos rápidos</h3>
+        <div id="quick-templates" class="quick-add__grid"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="weekly-stats-title">
+      <div class="card__header">
+        <h2 id="weekly-stats-title">Estadísticas semanales</h2>
+        <p class="card__subtitle">Comparativa de la última semana (lunes a domingo).</p>
+      </div>
+      <div id="weekly-stats" class="stats"></div>
+      <div class="charts">
+        <section class="chart" aria-labelledby="chart-duration-title">
+          <h3 id="chart-duration-title">Duración diaria (min)</h3>
+          <div id="duration-chart" class="chart__bars" role="img" aria-label="Duración total por día"></div>
+        </section>
+        <section class="chart" aria-labelledby="chart-load-title">
+          <h3 id="chart-load-title">Carga por semana</h3>
+          <div id="load-chart" class="chart__line" role="img" aria-label="Evolución de la carga semanal"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="history-title">
+      <div class="card__header">
+        <h2 id="history-title">Historial de sesiones</h2>
+        <p class="card__subtitle">Mantén un registro detallado de cada entrenamiento.</p>
+      </div>
+      <div class="history" aria-live="polite">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Duración</th>
+              <th scope="col">Carga</th>
+              <th scope="col">Notas</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="tips-title">
+      <div class="card__header">
+        <h2 id="tips-title">Consejos personalizados</h2>
+        <p class="card__subtitle">Tips generados por el entrenador virtual de OpenAI según tus últimas sesiones.</p>
+      </div>
+      <ul id="ai-tips" class="tips"></ul>
+    </section>
+  </main>
+
+  <template id="session-template">
+    <article class="session-pill" data-type="">
+      <div class="session-pill__meta">
+        <span class="session-pill__type"></span>
+        <span class="session-pill__duration"></span>
+      </div>
+      <p class="session-pill__notes"></p>
+    </article>
+  </template>
+
+  <script src="training-dashboard.js"></script>
+</body>
+</html>
