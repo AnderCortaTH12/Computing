@@ -90,3 +90,125 @@ body, html {
 .star-rating span:nth-child(5) {
     width: 100%;
 }
+
+/* Profile form layout */
+.profile-page {
+  font-family: "Montserrat", sans-serif;
+  background: #f5f7fb;
+  margin: 0;
+  padding: 0;
+  color: #2f2f2f;
+}
+
+.profile-header {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  background: linear-gradient(135deg, #ff6f61, #ff9966);
+  color: #fff;
+}
+
+.profile-container {
+  max-width: 720px;
+  margin: -2rem auto 3rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 3rem;
+}
+
+.profile-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  border: 1px solid #d9dce3;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #ff6f61;
+  box-shadow: 0 0 0 3px rgba(255, 111, 97, 0.2);
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #ff6f61, #ff9966);
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  padding: 0.85rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 111, 97, 0.35);
+}
+
+.feedback-message {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.feedback-message.success {
+  color: #1b9e50;
+}
+
+.feedback-message.error {
+  color: #d64545;
+}
+
+.feedback-message.pending {
+  color: #f39c12;
+}
+
+@media (max-width: 640px) {
+  .profile-container {
+    margin: -3rem 1rem 2rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+
+  .primary-button {
+    width: 100%;
+  }
+}

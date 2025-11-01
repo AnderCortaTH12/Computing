@@ -36,6 +36,11 @@ La API expondrá:
 | `GET /notifications/schedule` | Devuelve las ventanas horarias activas y la zona horaria configurada. |
 
 ### Frontend
+| Servicio   | Puerto local | Descripción |
+|------------|--------------|-------------|
+| Frontend   | `http://localhost:8080` | Sitio estático contenido en `Desarrollo web/` servido con Nginx. |
+| Backend    | `http://localhost:8000` | API FastAPI con endpoints de salud, perfil nutricional y consulta de horarios de notificación. |
+| Base de datos | `localhost:5432` | Instancia PostgreSQL con volúmenes persistentes. |
 
 El directorio `Desarrollo web/` contiene el sitio estático. Puedes servirlo con cualquier servidor de archivos estáticos. Un ejemplo rápido utilizando `python -m http.server`:
 
@@ -54,6 +59,16 @@ python -m http.server 8080
 El backend expone el endpoint `GET /notifications/schedule` para consultar los valores actuales de estas variables.
 
 ## 🧪 Pruebas
+### Perfil nutricional
+
+El servicio de FastAPI incluye un recurso `/profile/{profile_id}` que permite persistir métricas y preferencias del usuario:
+
+* `GET /profile/{profile_id}` devuelve (y crea si no existe) el perfil con peso, altura, objetivos y restricciones alimentarias.
+* `PUT /profile/{profile_id}` actualiza el perfil con los datos enviados en el cuerpo de la petición.
+
+Por defecto la aplicación utiliza SQLite (`backend/app/data/app.db`), aunque se puede establecer la variable de entorno `PROFILE_DATABASE_URL` para apuntar a otra base de datos compatible con SQLAlchemy.
+
+## 🚀 CI/CD
 
 El repositorio incluye tests unitarios y de extremo a extremo para el backend. Para ejecutarlos junto con el linting utiliza:
 

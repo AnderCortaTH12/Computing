@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Nutrición</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="profile-page">
+    <header class="profile-header">
+        <h1>Tu perfil de salud</h1>
+        <p>Completa tus datos para personalizar las recomendaciones nutricionales.</p>
+    </header>
+
+    <main class="profile-container">
+        <form id="profile-form" class="profile-form">
+            <div class="form-group">
+                <label for="weight">Peso (kg)</label>
+                <input type="number" step="0.1" min="0" id="weight" name="weight" placeholder="Ej. 70" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Altura (cm)</label>
+                <input type="number" step="0.1" min="0" id="height" name="height" placeholder="Ej. 175" required>
+            </div>
+            <div class="form-group full-width">
+                <label for="goals">Objetivos</label>
+                <textarea id="goals" name="goals" rows="4" placeholder="Describe tus objetivos nutricionales o de entrenamiento"></textarea>
+            </div>
+            <div class="form-group full-width">
+                <label for="dietary_restrictions">Restricciones alimentarias</label>
+                <textarea id="dietary_restrictions" name="dietary_restrictions" rows="4" placeholder="Incluye alergias, preferencias o restricciones"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="primary-button">Guardar cambios</button>
+            </div>
+        </form>
+        <p id="feedback-message" class="feedback-message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+    (function() {
+        const PROFILE_ID = 1;
+        const API_BASE_URL = window.profileApiBaseUrl || 'http://localhost:8000';
+        const form = document.getElementById('profile-form');
+        const feedback = document.getElementById('feedback-message');
+
+        function setFeedback(message, type = 'info') {
+            feedback.textContent = message;
+            feedback.className = `feedback-message ${type}`;
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/profile/${PROFILE_ID}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el perfil.');
+                }
+                const data = await response.json();
+                document.getElementById('weight').value = data.weight ?? '';
+                document.getElementById('height').value = data.height ?? '';
+                document.getElementById('goals').value = data.goals ?? '';
+                document.getElementById('dietary_restrictions').value = data.dietary_restrictions ?? '';
+            } catch (error) {
+                console.error(error);
+                setFeedback('Ocurrió un error al cargar tus datos. Inténtalo nuevamente.', 'error');
+            }
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            setFeedback('Guardando información…', 'pending');
+
+            const payload = {
+                weight: form.weight.value ? Number(form.weight.value) : null,
+                height: form.height.value ? Number(form.height.value) : null,
+                goals: form.goals.value.trim() || null,
+                dietary_restrictions: form.dietary_restrictions.value.trim() || null,
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/profile/${PROFILE_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!response.ok) {
+                    throw new Error('No se pudo guardar el perfil.');
+                }
+
+                const data = await response.json();
+                document.getElementById('weight').value = data.weight ?? '';
+                document.getElementById('height').value = data.height ?? '';
+                document.getElementById('goals').value = data.goals ?? '';
+                document.getElementById('dietary_restrictions').value = data.dietary_restrictions ?? '';
+                setFeedback('Perfil guardado correctamente.', 'success');
+            } catch (error) {
+                console.error(error);
+                setFeedback('Ocurrió un error al guardar tus datos. Inténtalo nuevamente.', 'error');
+            }
+        });
+
+        loadProfile();
+    })();
+    </script>
+</body>
+</html>
