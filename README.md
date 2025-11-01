@@ -49,6 +49,19 @@ cd "Desarrollo web"
 python -m http.server 8080
 ```
 
+### Nevera virtual
+
+El directorio `backend/` incluye una API en FastAPI que implementa la lógica de la nevera virtual: inventario de alimentos, registro manual, interpretación de tickets mediante OCR y sugerencia de recetas.
+
+```bash
+pip install -r backend/requirements.txt
+uvicorn app.main:app --reload --app-dir backend
+```
+
+Por defecto la API se expone en `http://localhost:8000/api`. Desde el navegador puedes abrir `Desarrollo web/virtual-fridge/index.html` (sirviéndolo con cualquier servidor estático) para gestionar la UI del inventario. Ajusta la variable global `APP_CONFIG.API_BASE` si publicas backend y frontend en hosts distintos.
+
+> ℹ️ Para habilitar el escaneo de tickets instala el binario `tesseract-ocr` en el sistema donde se ejecute el backend.
+
 ### Variables de entorno relevantes
 
 | Variable | Descripción |
