@@ -34,7 +34,7 @@ Los servicios expuestos son:
 | Servicio   | Puerto local | Descripción |
 |------------|--------------|-------------|
 | Frontend   | `http://localhost:8080` | Sitio estático contenido en `Desarrollo web/` servido con Nginx. |
-| Backend    | `http://localhost:8000` | API FastAPI con endpoints de salud y consulta de horarios de notificación. |
+| Backend    | `http://localhost:8000` | API FastAPI con endpoints de salud, perfil nutricional y consulta de horarios de notificación. |
 | Base de datos | `localhost:5432` | Instancia PostgreSQL con volúmenes persistentes. |
 
 Para detener los servicios ejecuta:
@@ -42,6 +42,19 @@ Para detener los servicios ejecuta:
 ```bash
 docker compose down
 ```
+
+### Nevera virtual
+
+El directorio `backend/` incluye una API en FastAPI que implementa la lógica de la nevera virtual: inventario de alimentos, registro manual, interpretación de tickets mediante OCR y sugerencia de recetas.
+
+```bash
+pip install -r backend/requirements.txt
+uvicorn app.main:app --reload --app-dir backend
+```
+
+Por defecto la API se expone en `http://localhost:8000/api`. Desde el navegador puedes abrir `Desarrollo web/virtual-fridge/index.html` (sirviéndolo con cualquier servidor estático) para gestionar la UI del inventario. Ajusta la variable global `APP_CONFIG.API_BASE` si publicas backend y frontend en hosts distintos.
+
+> ℹ️ Para habilitar el escaneo de tickets instala el binario `tesseract-ocr` en el sistema donde se ejecute el backend.
 
 ### Variables de entorno relevantes
 
@@ -52,6 +65,15 @@ docker compose down
 | `NOTIFICATION_TIMEZONE` | Zona horaria que se empleará al interpretar las ventanas configuradas. |
 
 El backend expone el endpoint `GET /notifications/schedule` para consultar los valores actuales de estas variables.
+
+### Perfil nutricional
+
+El servicio de FastAPI incluye un recurso `/profile/{profile_id}` que permite persistir métricas y preferencias del usuario:
+
+* `GET /profile/{profile_id}` devuelve (y crea si no existe) el perfil con peso, altura, objetivos y restricciones alimentarias.
+* `PUT /profile/{profile_id}` actualiza el perfil con los datos enviados en el cuerpo de la petición.
+
+Por defecto la aplicación utiliza SQLite (`backend/app/data/app.db`), aunque se puede establecer la variable de entorno `PROFILE_DATABASE_URL` para apuntar a otra base de datos compatible con SQLAlchemy.
 
 ## 🚀 CI/CD
 
